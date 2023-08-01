@@ -11,22 +11,26 @@ async function getWeather(location) {
     } else return null;
 }
 
-async function populateWeather(input) {
+async function populateWeather(location) {
     try {
         const locOutput = document.querySelector('#location');
         const tempfOutput = document.querySelector('#tempf');
         const tempcOutput = document.querySelector('#tempc');
-        const weatherData = await getWeather(input.value);
+        const weatherData = await getWeather(location);
 
-        locOutput.textContent = weatherData.location.name;
+        locOutput.textContent = `${weatherData.location.name}, ${weatherData.location.region}`;
         tempfOutput.textContent = `${weatherData.current.temp_f} °F`;
         tempcOutput.textContent = `${weatherData.current.temp_c} °C`;
     } catch (error) {
         console.log(error);
+        alert(error);
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    submitBtn.addEventListener('click', () => populateWeather(input));
+    submitBtn.addEventListener('click', () => populateWeather(input.value));
+    input.addEventListener('keydown', (e) => {
+        if (e.code === 'Enter') populateWeather(input.value);
+    });
 });
 
